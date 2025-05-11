@@ -1,71 +1,534 @@
+/* ------------------------------------------------------------
+   Junius – Futuristic Kid‑Friendly Theme
+   ------------------------------------------------------------ */
 
+/* Google Font is imported in <head>, just use it here */
+:root {
+  --brand-blue: #00e7ff;
+  --brand-purple: #8f00ff;
+  --brand-pink: #ff4dff;
+  --panel-bg: rgba(255, 255, 255, 0.85);
+  --panel-border: rgba(255, 255, 255, 0.25);
+  --deep-space: #001b2e;
+  --glass-blur: blur(10px);
+}
 
+body.space  { background: radial-gradient(circle at 50% 0%, #01070f 0%, #000 100%); }
+body.jungle { background: linear-gradient(135deg,#0b6623 0%,#064e17 50%,#001b2e 100%); }
+body.ocean  { background: radial-gradient(circle at 50% 0%, #0099ff 0%, #001b4d 100%); }
+body.desert { background: linear-gradient(135deg, #ffdfa5 0%, #e0b973 100%); }
+body.city   { background: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #000000 90%); }
+body.candy  { background: linear-gradient(135deg, #ffb3e6 0%, #ff66b3 50%, #d04dff 100%); }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(120deg, #e0f7fa, #ffffff);
+body.space,
+body.jungle,
+body.ocean,
+body.desert,
+body.city,
+body.candy {
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--panel-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  z-index: 10;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.theme-switcher h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+.theme-switcher select {
+  font-size: 0.9rem;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Comic Neue', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #212121;
+}
+
+/* Neon glow background */
+.bg-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+body {
+  background: var(--deep-space);
+  overflow-x: hidden;
+  transition: background 0.8s ease, background-image 0.8s ease;
+}
+
+/* --------------------------------- HERO  ------------------ */
+
+.hero {
+  text-align: center;
+  padding: 64px 16px 48px;
+  animation: pop-in 0.8s ease-out forwards;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand .flash {
+  animation: flash 3s infinite;
+}
+
+.tagline {
+  font-size: 1.1rem;
+  margin: 8px 0 24px;
+  color: #d9e7ff;
+}
+
+.scroll-btn {
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  background: var(--brand-purple);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.scroll-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+/* --------------------------------- CHAT  ------------------ */
+
+main {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  padding: 0 16px 64px;
+}
+
+/* Wrap chat and periodic panels side‑by‑side */
+.chat-flex {
+  display: flex;
+  gap: 24px;
   justify-content: center;
-  height: 100vh;
+  flex-wrap: wrap;
+}
+/* --------------------------------- PERIODIC BOX ---------- */
+.periodic-box {
+  width: 220px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  text-align: center;
+  animation: pop-in 0.8s ease-out;
+}
+
+/* --------------------------------- VOCAB BOX ---------- */
+.vocab-box {
+  width: 220px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  text-align: center;
+  animation: pop-in 0.8s ease-out;
+}
+.vocab-box h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+.vocab-box .vocab-word {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 8px 0;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.vocab-box .vocab-def {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Dock the element card on the right for wider screens.
+   Float vocab on left under theme switcher; tips returns to normal flow. */
+/* --------------------------------- SAVED CHATS SESSIONS -------- */
+#session-search {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--panel-border);
+  font-size: 0.9rem;
+}
+
+#session-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  max-height: 180px;
+  overflow-y: auto;
+  border-top: 1px solid var(--panel-border);
+}
+
+#session-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--panel-border);
+  transition: background 0.2s;
+  font-size: 0.95rem;
+}
+
+#session-list li:hover,
+#session-list li.selected {
+  background: rgba(255,255,255,0.2);
+}
+
+#session-messages {
+  border-top: 1px solid var(--panel-border);
+  padding-top: 12px;
+  max-height: calc(100vh - 480px);
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+#session-messages div {
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--panel-border);
+}
+
+#session-messages div strong {
+  color: var(--brand-purple);
+}
+
+@media (min-width: 768px) {
+  .periodic-box {
+    position: fixed;
+    right: 20px;          /* aligns with theme switcher */
+    top: 140px;           /* just below switcher */
+    width: 240px;
+    z-index: 9;
+  }
+  .vocab-box {
+    position: fixed;
+    left: 20px;           /* symmetrical with periodic gap */
+    top: 140px;           /* align with periodic top */
+    width: 240px;
+    z-index: 9;
+  }
+  .tips {
+    position: static;     /* normal document flow */
+    width: 100%;
+    max-width: 480px;
+    margin-top: 32px;
+  }
+  .chat-flex {
+    gap: 24px;
+  }
+}
+.periodic-box h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+.periodic-box .element-symbol {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 8px 0;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.periodic-box .element-name {
+  font-size: 1.05rem;
+  margin: 4px 0;
+}
+.periodic-box .element-info {
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .chat-container {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
-  padding: 20px;
+  max-width: 480px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  padding: 24px;
   display: flex;
   flex-direction: column;
-}
-
-h1 {
-  text-align: center;
-  color: #4b6cb7;
-  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
 }
 
 .chat-box {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  height: 200px;
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px;
+  height: 220px;
   overflow-y: auto;
-  margin-bottom: 12px;
-  font-size: 14px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  scroll-behavior: smooth;
 }
 
-.chat-box div {
-  margin-bottom: 8px;
-}
+.chat-box div { margin-bottom: 10px; }
 
 input[type="text"],
 input[type="number"] {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #cfd8dc;
   width: 100%;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-button {
-  padding: 10px;
-  background-color: #4b6cb7;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
   font-size: 15px;
 }
 
+button {
+  padding: 12px;
+  background-color: var(--brand-blue);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.15s, background 0.15s;
+}
+
 button:hover {
-  background-color: #3a58a3;
+  transform: translateY(-2px);
+  background-color: var(--brand-pink);
+}
+
+/* --------------------------------- NEW CHAT BUTTON ---------- */
+#new-chat-btn {
+  background: var(--brand-purple);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: background 0.15s, transform 0.15s;
+}
+#new-chat-btn:hover {
+  background: var(--brand-blue);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------- ICON BUTTONS (save) ---------- */
+.icon-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: transform 0.15s, color 0.15s;
+}
+.icon-btn:hover {
+  color: var(--brand-pink);
+  transform: scale(1.2);
+}
+
+/* --------------------------------- TIPS  ------------------ */
+
+.tips {
+  margin-top: 32px;
+  max-width: 480px;
+  width: 100%;
+  background: var(--panel-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px dashed var(--brand-blue);
+  border-radius: 16px;
+  padding: 24px;
+  animation: pop-in 1s ease-out 0.3s both;
+}
+
+.tips h2 {
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tips ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.tips li {
+  margin-bottom: 8px;
+  padding-left: 24px;
+  position: relative;
+}
+
+.tips li::before {
+  content: "★";
+  position: absolute;
+  left: 0;
+  color: var(--brand-pink);
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+}
+
+/* --------------------------------- FOOTER  ---------------- */
+
+.site-footer {
+  text-align: center;
+  padding: 24px 16px 32px;
+  color: #d9e7ff;
+  font-size: 0.85rem;
+}
+
+/* --------------------------------- ANIMATIONS ------------ */
+
+@keyframes pop-in {
+  0% { transform: translateY(20px) scale(0.95); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes flash {
+  0%, 100% { color: var(--brand-blue); }
+  50%      { color: var(--brand-pink); }
+}
+
+/* --------------------------------- RESPONSIVE ------------ */
+
+@media (max-width: 480px) {
+  .chat-container, .tips {
+    padding: 16px;
+  }
+
+  .chat-box {
+    height: 200px;
+  }
+  .theme-switcher {
+    right: 10px;
+    top: 10px;
+    padding: 8px 12px;
+  }
+  .theme-switcher h3 { font-size: 0.9rem; }
+
+  .chat-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+  .periodic-box {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+canvas#space-bg-canvas,
+canvas#ocean-bg-canvas,
+canvas#jungle-bg-canvas,
+canvas#desert-bg-canvas,
+canvas#city-bg-canvas,
+canvas#candy-bg-canvas {
+  z-index: -3; /* slightly behind radial glow */
+}
+
+/* --------------------------------- SAVED CHATS SIDEBAR ------- */
+#saved-sidebar {
+  position: fixed;
+  right: -300px;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--panel-bg);
+  border-left: 1px solid var(--panel-border);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: -4px 0 20px rgba(0,0,0,0.2);
+  padding: 16px;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  z-index: 11;
+}
+#saved-sidebar.open {
+  right: 0;
+}
+#saved-sidebar h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+#saved-content div {
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 8px;
+}
+
+
+@media (min-width: 768px) {
+  /* Saved‑chats toggle pinned under periodic panel */
+  #toggle-saved-btn {
+    position: fixed;
+    right: 20px;
+    top: 400px;
+    font-size: 1.6rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 12;           /* raised above sidebar's z-index */
+    transition: transform 0.15s, color 0.15s;
+  }
+  #toggle-saved-btn:hover {
+    color: var(--brand-pink);
+    transform: scale(1.2);
+  }
+}
+
+@media (max-width: 767px) {
+  /* Center toggle under chat on mobile */
+  #toggle-saved-btn {
+    position: static;
+    display: block;
+    margin: 16px auto 0;
+    font-size: 1.4rem;
+  }
 }

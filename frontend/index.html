@@ -4,16 +4,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Junius AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="chat-container">
-    <h1>🤖 Junius AI</h1>
-    <div class="chat-box" id="chat-box"></div>
-    <input type="number" id="age" placeholder="Your age" min="5" max="13" />
-    <input type="text" id="question" placeholder="Ask Junius something..." />
-    <button onclick="askJunius()">Ask</button>
-  </div>
+  <svg class="bg-glow" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <defs>
+      <radialGradient id="glow" cx="50%" cy="50%" r="75%">
+        <stop offset="0%" stop-color="#00e7ff" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#001b2e" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#glow)"></rect>
+  </svg>
+  <header class="hero">
+    <h1><span class="brand">🤖 Junius&nbsp;<span class="flash">AI</span></span></h1>
+    <p class="tagline">Your kid‑safe guide to every question in the universe.</p>
+    <button class="scroll-btn" onclick="document.getElementById('chat-section').scrollIntoView({behavior:'smooth'});">
+      🚀 Start Asking
+    </button>
+  </header>
+  <main id="chat-section" class="chat-flex">
+    <!-- Theme selector -->
+    <aside class="theme-switcher">
+      <h3>Scene</h3>
+      <select id="theme-select">
+        <option value="default">Default</option>
+        <option value="space">Space</option>
+        <option value="jungle">Jungle</option>
+        <option value="ocean">Ocean</option>
+        <option value="desert">Desert</option>
+        <option value="city">City Night</option>
+        <option value="candy">Candy Land</option>
+      </select>
+    </aside>
+    <div class="chat-container">
+      <div class="chat-actions">
+        <button id="new-chat-btn">🆕 New Chat</button>
+      </div>
+      <div class="chat-box" id="chat-box"></div>
+      <input type="number" id="age" placeholder="Your age" min="5" max="13" />
+      <input type="text" id="question" placeholder="Ask Junius something..." />
+      <button onclick="askJunius()">Ask</button>
+    </div> <!-- closes chat-container -->
+    <!-- Try‑asking tips moved under chat -->
+    <aside class="tips">
+      <h2>✨ Try asking:</h2>
+      <ul>
+        <li>“Why does the Moon change shape?”</li>
+        <li>“How do airplanes stay up?”</li>
+        <li>“Tell me a fun fact about dolphins.”</li>
+        <li>“Can you explain photosynthesis like I’m 8?”</li>
+      </ul>
+      <p class="hint">Tip: include your age for the coolest answer!</p>
+    </aside>
+      <!-- hidden sidebar for saved chats -->
+      <aside id="saved-sidebar" class="saved-sidebar">
+        <h3>Saved Chats</h3>
+        <input type="text" id="session-search" placeholder="🔍 Search chats..." />
+        <ul id="session-list"></ul>
+        <div id="session-messages"></div>
+      </aside>
+      <!-- Random periodic‑table element -->
+      <aside id="periodic-box" class="periodic-box">
+        <h3>Random Element</h3>
+        <div class="element-symbol">H</div>
+        <p class="element-name">Hydrogen</p>
+        <p class="element-info">Atomic #: 1<br>Atomic Mass: 1.008</p>
+      </aside>
+      <!-- Saved‐Chats Toggle -->
+      <button id="toggle-saved-btn" class="icon-btn periodic-save-btn" title="Show saved chats">💾</button>
+      <!-- Word‑of‑the‑Day -->
+      <aside id="vocab-box" class="vocab-box">
+        <h3>Word of the Day</h3>
+        <div class="vocab-word">Curiosity</div>
+        <p class="vocab-def">A strong desire to know or learn something.</p>
+      </aside>
+  </main> <!-- closes main -->
+  <footer class="site-footer">
+    Made with 🩵 by GalacTechNYC • © 2025
+  </footer>
+  <!-- theme handlers -->
+  <script src="ocean.js"></script>
+  <script src="jungle.js"></script>
+  <script src="space.js"></script>
+  <script src="desert.js"></script>
+  <script src="city.js"></script>
+  <script src="candy.js"></script>
+  <script src="periodic.js"></script>
+  <script src="vocab.js"></script>
+  <!-- main app logic -->
   <script src="script.js"></script>
 </body>
 </html>
