@@ -28,6 +28,15 @@ app.get('/', (req, res) => {
   res.send('Junius AI backend is live 🚀');
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Junius server is running on http://localhost:${PORT}`);
-});
+/**
+ * Export the Express app so Vercel (or other serverless platforms) can
+ * handle requests without starting its own listener. When we’re running
+ * locally (i.e., not on Vercel), spin up the traditional server.
+ */
+if (!process.env.VERCEL && !process.env.NOW_REGION) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`✅ Junius server is running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

@@ -12,6 +12,16 @@ router.post('/ask', async (req, res) => {
 
   const { question, age } = req.body;
 
+  // Basic payload validation
+  if (typeof question !== 'string' || typeof age === 'undefined') {
+    return res.status(400).json({ message: 'Both "question" (string) and "age" are required.' });
+  }
+
+  const numericAge = Number(age);
+  if (Number.isNaN(numericAge) || numericAge < 0) {
+    return res.status(400).json({ message: '"age" must be a valid non‑negative number.' });
+  }
+
   try {
     console.log('🧼 Running input filter...');
     if (!filterBadInput(question)) {
@@ -26,7 +36,7 @@ router.post('/ask', async (req, res) => {
   let tier;
   try {
     console.log('🎚️ Determining age tier...');
-    tier = getAgeTier(age);
+    tier = getAgeTier(numericAge);
     console.log('✅ Tier:', tier);
   } catch (err) {
     console.error('❌ Error in getAgeTier:', err);

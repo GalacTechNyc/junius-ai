@@ -13,7 +13,13 @@ async function askJunius() {
   chatBox.innerHTML += `<div><strong>You:</strong> ${question}</div>`;
 
   try {
-    const res = await fetch('http://localhost:5050/api/ask', {
+    // Use localhost endpoint in dev, relative path in prod (Vercel)
+    const endpoint =
+      window.location.hostname === 'localhost'
+        ? 'http://localhost:5050/api/ask'
+        : '/api/ask';
+
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question, age })
