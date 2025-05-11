@@ -1,11 +1,12 @@
 const dotenv = require('dotenv');
 dotenv.config();
-console.log("🛠️ Starting Junius server...");
 
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const juniusRouter = require('./backend/routes/juniusRouter.js');
+
+console.log("🛠️ Starting Junius server...");
 
 const app = express();
 const PORT = process.env.PORT || 5050;
