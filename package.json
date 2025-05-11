@@ -1,12 +1,15 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "server.js",    "use": "@vercel/node"   },
-    { "src": "frontend/**",  "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/server.js"        },
-    { "src": "/",        "dest": "/frontend/index.html" },
-    { "src": "/(.*)",    "dest": "/frontend/$1"      }
-  ]
+  "name": "junius-ai",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^5.1.0",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "body-parser": "^2.2.0",
+    "dotenv": "^16.5.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
 }

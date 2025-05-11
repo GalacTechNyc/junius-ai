@@ -1,7 +1,10 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
 const express = require('express');
+// Load .env only in non-production (e.g., local development)
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    require('dotenv').config();
+  } catch {}
+}
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const juniusRouter = require('./backend/routes/juniusRouter.js');
