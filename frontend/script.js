@@ -13,7 +13,7 @@ async function askJunius() {
   chatBox.innerHTML += `<div><strong>You:</strong> ${question}</div>`;
 
   try {
-    const res = await fetch('/api/ask', {
+    const res = await fetch('http://localhost:5050/api/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question, age })
