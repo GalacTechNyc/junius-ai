@@ -19,7 +19,7 @@ router.post('/ask', async (req, res) => {
 
   const numericAge = Number(age);
   if (Number.isNaN(numericAge) || numericAge < 0) {
-    return res.status(400).json({ message: '"age" must be a valid non‑negative number.' });
+    return res.status(400).json({ message: '"age" must be a valid non-negative number.' });
   }
 
   try {
