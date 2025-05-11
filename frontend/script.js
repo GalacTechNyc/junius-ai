@@ -2,9 +2,10 @@
 const chatBox        = document.getElementById('chat-box');
 const chatHistoryKey = 'junius_chat_history';
 const themeKey       = 'junius_theme';
-let   history        = JSON.parse(localStorage.getItem(chatHistoryKey) || '[]');
+let history          = JSON.parse(localStorage.getItem(chatHistoryKey) || '[]');
 // keeps track of which theme is active so we can call its cleanup
 let currentTheme = null;
+
 // ------- Session management --------
 const sessionsKey = 'junius_chat_sessions';
 let sessions      = JSON.parse(localStorage.getItem(sessionsKey) || '[]');
@@ -20,16 +21,17 @@ function renderHistory() {
 }
 
 function applyTheme(theme) {
-  // -- cleanup previous animated scene if it has a destroy method
+  // cleanup previous animated scene if it has a destroy method
   if (currentTheme && window.themeHandlers?.[currentTheme]?.destroy) {
     window.themeHandlers[currentTheme].destroy();
   }
-  // remove previous
+  // remove previous theme classes & canvases
   document.body.classList.remove('space','jungle','ocean','desert','city','candy','default');
-  ['space-bg-canvas','ocean-bg-canvas','jungle-bg-canvas','desert-bg-canvas','city-bg-canvas','candy-bg-canvas'].forEach(id=>{
-    const el=document.getElementById(id);
-    if (el) el.remove();
-  });
+  ['space-bg-canvas','ocean-bg-canvas','jungle-bg-canvas','desert-bg-canvas','city-bg-canvas','candy-bg-canvas']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
 
   if (theme !== 'default') document.body.classList.add(theme);
   if (window.themeHandlers?.[theme]) window.themeHandlers[theme]();
@@ -41,11 +43,8 @@ function applyTheme(theme) {
 }
 
 async function askJunius() {
-  console.log("🟢 askJunius was called");
-
   const question = document.getElementById('question').value;
   const age = document.getElementById('age').value;
-
   if (!question || !age) {
     alert("Please enter your age and a question.");
     return;
@@ -53,14 +52,13 @@ async function askJunius() {
 
   const youSnippet = `<div><strong>You:</strong> ${question}</div>`;
   chatBox.innerHTML += youSnippet;
-  history.push(youSnippet); saveHistory();
+  history.push(youSnippet);
+  saveHistory();
 
   try {
-    // Use localhost endpoint in dev, relative path in prod (Vercel)
-    const endpoint =
-      window.location.hostname === 'localhost'
-        ? 'http://localhost:5050/api/ask'
-        : '/api/ask';
+    const endpoint = window.location.hostname === 'localhost'
+      ? 'http://localhost:5050/api/ask'
+      : '/api/ask';
 
     const res = await fetch(endpoint, {
       method: 'POST',
@@ -68,32 +66,32 @@ async function askJunius() {
       body: JSON.stringify({ question, age })
     });
 
-    console.log('Fetch response:', res);
-
     if (!res.ok) {
       const botSnippet = `<div><strong>Junius:</strong> 🚨 Server returned status ${res.status}</div>`;
       chatBox.innerHTML += botSnippet;
-      history.push(botSnippet); saveHistory();
+      history.push(botSnippet);
+      saveHistory();
       return;
     }
 
     const data = await res.json();
-    console.log('Parsed data:', data);
-
     if (data.response) {
       const botSnippet = `<div><strong>Junius:</strong> ${data.response}</div>`;
       chatBox.innerHTML += botSnippet;
-      history.push(botSnippet); saveHistory();
+      history.push(botSnippet);
+      saveHistory();
     } else {
       const botSnippet = `<div><strong>Junius:</strong> Hmm... I couldn't find an answer to that.</div>`;
       chatBox.innerHTML += botSnippet;
-      history.push(botSnippet); saveHistory();
+      history.push(botSnippet);
+      saveHistory();
     }
   } catch (error) {
-    console.error('Full error:', error);
+    console.error(error);
     const botSnippet = `<div><strong>Junius:</strong> 🚨 ${error.message}</div>`;
     chatBox.innerHTML += botSnippet;
-    history.push(botSnippet); saveHistory();
+    history.push(botSnippet);
+    saveHistory();
   }
 
   document.getElementById('question').value = '';
@@ -101,19 +99,20 @@ async function askJunius() {
 }
 
 window.askJunius = askJunius;
+
 // ------- Restore history + theme on load --------
 window.addEventListener('DOMContentLoaded', () => {
   renderHistory();
   applyTheme(localStorage.getItem(themeKey) || 'default');
 
+  // Theme selector
   const sel = document.getElementById('theme-select');
   if (sel) sel.addEventListener('change', e => applyTheme(e.target.value));
 
-  // — New Chat button: clear conversation and history
+  // New Chat button
   const newChatBtn = document.getElementById('new-chat-btn');
   if (newChatBtn) {
     newChatBtn.addEventListener('click', () => {
-      // Save current session if any messages exist
       if (history.length) {
         sessions.push({
           id:      Date.now(),
@@ -122,22 +121,19 @@ window.addEventListener('DOMContentLoaded', () => {
         });
         localStorage.setItem(sessionsKey, JSON.stringify(sessions));
       }
-      // Start fresh chat
       history = [];
       saveHistory();
       renderHistory();
     });
   }
 
-  // — Saved Chats toggle sidebar
+  // Saved Chats toggle
   const toggleSavedBtn = document.getElementById('toggle-saved-btn');
   const sidebar        = document.getElementById('saved-sidebar');
   if (toggleSavedBtn && sidebar) {
     toggleSavedBtn.addEventListener('click', () => {
       const isOpen = sidebar.classList.toggle('open');
-      if (isOpen) {
-        renderSessionList();
-      }
+      if (isOpen) renderSessionList();
     });
   }
 
@@ -160,7 +156,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Filter sessions
   if (searchInput) {
     searchInput.addEventListener('input', e => {
       const term = e.target.value.toLowerCase();
