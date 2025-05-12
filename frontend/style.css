@@ -357,10 +357,11 @@ main {
   max-width: 100%;
   overflow-x: auto;
 }
-.code-wrapper pre {
-  display: block;
-  white-space: pre;
-  margin: 0;
+ .code-wrapper pre {
+   display: block;
+   white-space: pre-wrap;       /* allow lines to wrap */
+   word-break: break-word;      /* break long words if needed */
+   margin: 0;
 }
 
 /* ----------------------- COLLAPSIBLE CODE BLOCKS ----------------------- */
