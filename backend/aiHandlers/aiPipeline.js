@@ -1,6 +1,6 @@
-import axios from 'axios';
+const axios = require('axios');
 
-export async function callChatGPT(question) {
+async function callChatGPT(question) {
   if (!process.env.OPENAI_API_KEY) {
     throw new Error('Missing OPENAI_API_KEY in environment variables');
   }
@@ -25,7 +25,7 @@ export async function callChatGPT(question) {
   }
 }
 
-export async function callGemini(responseText, tier) {
+async function callGemini(responseText, tier) {
   console.log('🎯 Gemini Tier:', tier);
 
   let safeResponse = responseText;
@@ -39,3 +39,8 @@ export async function callGemini(responseText, tier) {
   console.log('🧒 Gemini Final Response:', safeResponse);
   return safeResponse;
 }
+
+module.exports = {
+  callChatGPT,
+  callGemini
+};

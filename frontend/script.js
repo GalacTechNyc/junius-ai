@@ -10,6 +10,13 @@ let currentTheme = null;
 const sessionsKey = 'junius_chat_sessions';
 let sessions      = JSON.parse(localStorage.getItem(sessionsKey) || '[]');
 
+// helper: escape HTML for code blocks
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+}
+
 function saveHistory() {
   localStorage.setItem(chatHistoryKey, JSON.stringify(history));
 }
@@ -76,19 +83,28 @@ async function askJunius() {
 
     const data = await res.json();
     if (data.response) {
-      const botSnippet = `<div><strong>Junius:</strong> ${data.response}</div>`;
+      const botSnippet = `
+        <div data-speaker="Junius"><strong>Junius:</strong></div>
+        <button class="toggle-code">Show code</button>
+        <div class="collapsible">
+          <div class="code-wrapper">
+            <button class="copy-btn" title="Copy code">📋 Copy</button>
+            <pre><code class="language-javascript">${escapeHtml(data.response)}</code></pre>
+          </div>
+        </div>
+      `;
       chatBox.innerHTML += botSnippet;
       history.push(botSnippet);
       saveHistory();
     } else {
-      const botSnippet = `<div><strong>Junius:</strong> Hmm... I couldn't find an answer to that.</div>`;
+      const botSnippet = `<div data-speaker="Junius"><strong>Junius:</strong> Hmm... I couldn't find an answer to that.</div>`;
       chatBox.innerHTML += botSnippet;
       history.push(botSnippet);
       saveHistory();
     }
   } catch (error) {
     console.error(error);
-    const botSnippet = `<div><strong>Junius:</strong> 🚨 ${error.message}</div>`;
+    const botSnippet = `<div data-speaker="Junius"><strong>Junius:</strong> 🚨 ${escapeHtml(error.message)}</div>`;
     chatBox.innerHTML += botSnippet;
     history.push(botSnippet);
     saveHistory();
@@ -165,4 +181,24 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // — Copy code button handler
+  document.addEventListener('click', e => {
+    if (e.target.matches('.copy-btn')) {
+      const codeEl = e.target.nextElementSibling.querySelector('code');
+      navigator.clipboard.writeText(codeEl.textContent);
+      const original = e.target.textContent;
+      e.target.textContent = '✅ Copied!';
+      setTimeout(() => { e.target.textContent = original; }, 1500);
+    }
+  });
+
+  // — Toggle code block visibility
+  document.addEventListener('click', e => {
+    if (e.target.matches('.toggle-code')) {
+      const coll = e.target.nextElementSibling;
+      coll.classList.toggle('open');
+      e.target.textContent = coll.classList.contains('open') ? 'Hide code' : 'Show code';
+    }
+  });
 });

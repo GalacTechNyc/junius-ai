@@ -1,10 +1,7 @@
 const express = require('express');
-// Load .env only in non-production (e.g., local development)
-if (process.env.NODE_ENV !== 'production') {
-  try {
-    require('dotenv').config();
-  } catch {}
-}
+// local dev only
+try { require('dotenv').config(); } catch {}
+
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const juniusRouter = require('./backend/routes/juniusRouter.js');
@@ -25,7 +22,14 @@ app.post('/test', (req, res) => {
   res.json({ message: "Test route working!", body: req.body });
 });
 
+
 app.use('/api', juniusRouter);
+
+// Global error handler: logs the error and returns 500 JSON
+app.use((err, req, res, next) => {
+  console.error('💥 Unhandled error:', err);
+  res.status(500).json({ message: 'Internal Server Error', error: err.message });
+});
 
 app.get('/', (req, res) => {
   res.send('Junius AI backend is live 🚀');

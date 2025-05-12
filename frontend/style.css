@@ -308,6 +308,74 @@ main {
   scroll-behavior: smooth;
 }
 
+/* --------------------------- CODE OUTPUT STYLING ----------------------- */
+.chat-box pre {
+  background: rgba(30, 30, 50, 0.9);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95rem;
+  margin: 8px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.chat-box pre code {
+  background: none;
+  color: #ffffff;
+}
+
+/* Optional: line numbers */
+.chat-box pre[class*="language-"] {
+  position: relative;
+  padding-left: 3rem;
+}
+
+.chat-box pre[class*="language-"] > code {
+  counter-reset: linenumber;
+}
+
+.chat-box pre[class*="language-"] > code > span {
+  display: block;
+  padding-left: 0.75rem;
+  margin-left: -0.75rem;
+}
+
+.chat-box pre[class*="language-"] .line-number {
+  position: absolute;
+  left: 0.5rem;
+  width: 2rem;
+  text-align: right;
+  color: rgba(255,255,255,0.4);
+  user-select: none;
+}
+
+/* ----------------------- COLLAPSIBLE CODE BLOCKS ----------------------- */
+.toggle-code {
+  background: var(--brand-blue);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  transition: background 0.15s, transform 0.15s;
+}
+.toggle-code:hover {
+  background: var(--brand-pink);
+  transform: translateY(-2px);
+}
+
+.collapsible {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.collapsible.open {
+  max-height: 800px; /* sufficient for most code blocks */
+}
+
 .chat-box div { margin-bottom: 10px; }
 
 input[type="text"],
