@@ -83,16 +83,23 @@ async function askJunius() {
 
     const data = await res.json();
     if (data.response) {
-      const botSnippet = `
-        <div data-speaker="Junius"><strong>Junius:</strong></div>
-        <button class="toggle-code">Show code</button>
-        <div class="collapsible">
-          <div class="code-wrapper">
-            <button class="copy-btn" title="Copy code">📋 Copy</button>
-            <pre><code class="language-javascript">${escapeHtml(data.response)}</code></pre>
+      // Determine if the response should be treated as code
+      const isCode = data.response.trim().startsWith('```') || data.response.includes('\n');
+      let botSnippet;
+      if (isCode) {
+        botSnippet = `
+          <div data-speaker="Junius"><strong>Junius:</strong></div>
+          <button class="toggle-code">Show code</button>
+          <div class="collapsible">
+            <div class="code-wrapper">
+              <button class="copy-btn" title="Copy code">📋 Copy</button>
+              <pre><code class="language-javascript">${escapeHtml(data.response)}</code></pre>
+            </div>
           </div>
-        </div>
-      `;
+        `;
+      } else {
+        botSnippet = `<div data-speaker="Junius"><strong>Junius:</strong> ${escapeHtml(data.response)}</div>`;
+      }
       chatBox.innerHTML += botSnippet;
       history.push(botSnippet);
       saveHistory();
