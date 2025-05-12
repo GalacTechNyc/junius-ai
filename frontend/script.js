@@ -84,7 +84,7 @@ async function askJunius() {
     const data = await res.json();
     if (data.response) {
       // Determine if the response should be treated as code
-      const isCode = data.response.trim().startsWith('```') || data.response.includes('\n');
+      const isCode = data.response.trim().startsWith('```') && data.response.trim().endsWith('```');
       let botSnippet;
       if (isCode) {
         botSnippet = `

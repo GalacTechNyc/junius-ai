@@ -10,7 +10,7 @@ router.post('/ask', async (req, res) => {
   console.log('✅ /api/ask route hit');
   console.log('Incoming request body:', req.body);
 
-  const { question, age } = req.body;
+  const { question, age, history = [] } = req.body;
 
   // Basic payload validation
   if (typeof question !== 'string' || typeof age === 'undefined') {
@@ -38,6 +38,14 @@ router.post('/ask', async (req, res) => {
     console.log('🎚️ Determining age tier...');
     tier = getAgeTier(numericAge);
     console.log('✅ Tier:', tier);
+    // Combine past conversation into full prompt
+    const plainHistory = history
+      .map(item => item.replace(/<[^>]+>/g, '').trim())
+      .filter(Boolean)
+      .join('\n');
+    var fullPrompt = plainHistory
+      ? `${plainHistory}\nUser: ${question}`
+      : question;
   } catch (err) {
     console.error('❌ Error in getAgeTier:', err);
     return res.status(500).json({ message: 'Age tier failed.' });
@@ -46,7 +54,7 @@ router.post('/ask', async (req, res) => {
   let gptResponse;
   try {
     console.log('🤖 Calling ChatGPT...');
-    gptResponse = await callChatGPT(question);
+    gptResponse = await callChatGPT(fullPrompt);
     console.log('🧠 GPT Response:', gptResponse);
   } catch (err) {
     console.error('❌ Error in callChatGPT:', err);
