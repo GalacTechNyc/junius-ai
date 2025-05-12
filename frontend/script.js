@@ -83,21 +83,23 @@ async function askJunius() {
 
     const data = await res.json();
     if (data.response) {
-      // Determine if the response should be treated as code
-      const isCode = data.response.trim().startsWith('```') && data.response.trim().endsWith('```');
+      // Only treat fence-wrapped responses as code
+      const fenceMatch = data.response.match(/```(?:\w*\n)?([\s\S]*?)```/);
       let botSnippet;
-      if (isCode) {
+      if (fenceMatch) {
+        const codeContent = fenceMatch[1];
         botSnippet = `
           <div data-speaker="Junius"><strong>Junius:</strong></div>
           <button class="toggle-code">Hide code</button>
           <div class="collapsible open">
             <div class="code-wrapper">
               <button class="copy-btn" title="Copy code">📋 Copy</button>
-              <pre><code class="language-javascript">${escapeHtml(data.response)}</code></pre>
+              <pre><code class="language-javascript">${escapeHtml(codeContent)}</code></pre>
             </div>
           </div>
         `;
       } else {
+        // plain text response
         botSnippet = `<div data-speaker="Junius"><strong>Junius:</strong> ${escapeHtml(data.response)}</div>`;
       }
       chatBox.innerHTML += botSnippet;
