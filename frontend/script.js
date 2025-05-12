@@ -82,9 +82,11 @@ async function askJunius() {
     }
 
     const data = await res.json();
+    // Remove any leading greeting duplication (e.g., "🧒 Hey there! Junius: 🧒")
+    const cleanResponse = data.response.replace(/^.*?Junius:\s*/i, '').trim();
     if (data.response) {
       // Only treat fence-wrapped responses as code
-      const fenceMatch = data.response.match(/```(?:\w*\n)?([\s\S]*?)```/);
+      const fenceMatch = cleanResponse.match(/```(?:\w*\n)?([\s\S]*?)```/);
       let botSnippet;
       if (fenceMatch) {
         const codeContent = fenceMatch[1];
@@ -100,7 +102,7 @@ async function askJunius() {
         `;
       } else {
         // plain text response
-        botSnippet = `<div data-speaker="Junius"><strong>Junius:</strong> ${escapeHtml(data.response)}</div>`;
+        botSnippet = `<div data-speaker="Junius"><strong>Junius:</strong> ${escapeHtml(cleanResponse)}</div>`;
       }
       chatBox.innerHTML += botSnippet;
       history.push(botSnippet);
