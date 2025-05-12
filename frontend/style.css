@@ -350,6 +350,18 @@ main {
   user-select: none;
 }
 
+/* ----------------------- CODE BLOCK CONTAINMENT ----------------------- */
+/* Ensure code blocks fit within their container and scroll horizontally */
+.code-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.code-wrapper pre {
+  display: block;
+  white-space: pre;
+  margin: 0;
+}
+
 /* ----------------------- COLLAPSIBLE CODE BLOCKS ----------------------- */
 .toggle-code {
   background: var(--brand-blue);

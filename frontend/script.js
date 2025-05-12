@@ -89,8 +89,8 @@ async function askJunius() {
       if (isCode) {
         botSnippet = `
           <div data-speaker="Junius"><strong>Junius:</strong></div>
-          <button class="toggle-code">Show code</button>
-          <div class="collapsible">
+          <button class="toggle-code">Hide code</button>
+          <div class="collapsible open">
             <div class="code-wrapper">
               <button class="copy-btn" title="Copy code">📋 Copy</button>
               <pre><code class="language-javascript">${escapeHtml(data.response)}</code></pre>
